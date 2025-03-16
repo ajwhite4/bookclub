@@ -1,0 +1,49 @@
+<!--
+    White, A. (2025). CIS 530 Server-Side Development. Bellevue University.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookclub | About Us</title>
+
+    <!--  Bootstrap StyleSheet CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" 
+        crossorigin="anonymous">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <div class="container mt-5">
+        <!-- Inspired by https://bossybeauty.com/pages/about-us -->
+        <h1 class="text-center">About Us</h1>
+
+        <div class="row mt-4">
+            <div class="col-md-8 mx-auto text-center">
+                <h2>Meet our Founder - Alex Carter</h2>
+
+                <!-- Image by Freepik, source: https://www.freepik.com/ -->
+                <div class="text-center mb-4">
+                    <img th:src="@{/images/alex_carter_profile.jpg}" alt="Alex Carter - Founder" class="img-fluid rounded">
+                </div>
+
+                <!-- About us narrative -->
+                <p>
+                    Alex Carter grew up in a small town where books were his world. He loved literature at an early age, 
+                    inspired by authors like J. K. Rowling, J.R.R. Tolkien, and Tom Clancy. After studying English 
+                    Literature, he created <strong>BookClub</strong>, a space where readers from across the globe 
+                    could gather and express their passion for reading.
+                </p>
+                <p>
+                    With BookClub, Alex has built a community where members read books, interview authors, and share 
+                    book recommendations. His mission is simple: to make reading a social and rewarding experience.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div th:insert="~{fragments/scriptFooter :: scriptFooter}"></div>
+</body>
+</html>
