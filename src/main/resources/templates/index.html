@@ -30,6 +30,27 @@
                 </div>
             </div>
         </section>
+
+        <!-- Book List Section -->
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
+                <!-- Iterate Over Each Book -->
+                <div class="col" th:each="book : ${books}">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <span th:text="${book.getTitle()}"></span>
+                                <br/>
+                                <small class="text-muted"><em th:text="${book.getDescription()}"></em></small>
+                            </p>
+                            <div class="btn-group">
+                                <a href="#" th:href="@{/{id}(id=${book.getIsbn()})}" class="btn btn-sm btn-outline-secondary">View</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <div th:insert="~{fragments/footer :: footer}"></div>
