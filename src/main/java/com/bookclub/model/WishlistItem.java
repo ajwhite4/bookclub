@@ -6,11 +6,14 @@ package com.bookclub.model;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * Represents a wishlist item in the BookClub application.
  * This class stores details about a wishlist item, including its ISBN and title.
  */
+@Document("wishlist")
 public class WishlistItem {
     @NotNull
     @NotEmpty(message = "ISBN is a required field.")
@@ -19,6 +22,9 @@ public class WishlistItem {
     @NotNull
     @NotEmpty(message = "Title is a required field.")
     private String title;
+
+    @Id
+    private String id;
 
     // Default Constructor
     public WishlistItem() {
@@ -52,9 +58,13 @@ public class WishlistItem {
         this.title = title;
     }
 
+    public String getId() {
+        return id;
+    }
+
     // Override toString method to return a formatted string containing book details.
     @Override
     public String toString() {
-        return "WishlistItem{isbn=" + isbn + ", title=" + title + "}";
+        return String.format("WishlistItem{id=%s, isbn=%s, title=%s}", id, isbn, title);
     }
 }
