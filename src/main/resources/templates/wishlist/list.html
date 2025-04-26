@@ -22,34 +22,53 @@
             <!-- Button to navigate to the form for adding a new wishlist item -->
             <a href="/wishlist/new" th:href="@{/wishlist/new}" class="btn btn-outline-secondary text-center">New Wishlist Item</a>
         </p>
-
-        <div class="container">
-            <!-- Table displaying the list of wishlist items -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ISBN</th>
-                        <th>Title</th>
-                        <th>Functions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterate over the wishlist model attribute and display each item -->
-                    <tr th:each="item : ${wishlist}">
-                        <!-- Display the ISBN of the wishlist item -->
-                        <td th:text="${item.isbn}"></td>
-                        <!-- Display the title of the wishlist item -->
-                        <td th:text="${item.title}"></td>
-                        <td>
-                            <a href="#" class="link">Edit</a> |
-                            <a href="#" class="link">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div id="wishlist"></div>
     </div>
 
     <div th:insert="~{fragments/scriptFooter :: scriptFooter}"></div>
+
+    <!-- JavaScript to fetch and display wishlist items -->
+    <script type="text/javascript">
+        // HTTP client for making GET requests
+        class HttpClient {
+            // Sends a GET request and returns the JSON response
+            async get(url, params = "") {
+                url = new URL(url);
+                url.search = new URLSearchParams(params).toString();
+
+                console.log(url.toString());
+
+                const res = await fetch(url.toString(), {
+                    method: 'GET',
+                });
+
+                return res.json();
+            }
+        }
+
+        // Builds an HTML table from a list of wishlist items.
+        function buildTable (books) {
+            let tableString = `<table class="table"><tr><th>ISBN</th><th>Title</th><th>Functions</th></tr>`;
+
+            for (let book of books) {
+                tableString += `<tr><td>${book.isbn}</td><td>${book.title}</td><td><a href="#">Edit</a> | <a href="#">Delete</a></td></tr>`;
+            }
+
+            tableString += `</table>`
+
+            return tableString;
+        }
+
+        // Create HttpClient instance
+        const http = new HttpClient();
+
+        // Fetch wishlist data and display it
+        http.get('http://localhost:8080/api/wishlist').then(res => {
+            console.log(res);
+            document.getElementById("wishlist").innerHTML = buildTable(res);
+        }).catch(e => {
+            console.log(e);
+        })
+    </script>
 </body>
 </html>

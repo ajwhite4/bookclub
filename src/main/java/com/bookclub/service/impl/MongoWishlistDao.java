@@ -34,6 +34,12 @@ public class MongoWishlistDao implements WishlistDao {
         mongoTemplate.save(entity);
     }
 
+    // Finds a wishlist item in the database by id.
+    @Override
+    public WishlistItem find(String id) {
+        return mongoTemplate.findById(id, WishlistItem.class);
+    }
+
     @Override
     public void update(WishlistItem entity) {
         // TODO Auto-generated method stub
@@ -44,11 +50,5 @@ public class MongoWishlistDao implements WishlistDao {
     public boolean remove(WishlistItem entity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'remove'");
-    }
-
-    @Override
-    public WishlistItem find(String key) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'find'");
     }
 }
