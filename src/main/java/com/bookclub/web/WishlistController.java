@@ -12,13 +12,15 @@ package com.bookclub.web;
 import com.bookclub.service.impl.MongoWishlistDao;
 import com.bookclub.service.dao.WishlistDao;
 import com.bookclub.model.WishlistItem;
+
 import jakarta.validation.Valid;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -67,9 +69,10 @@ public class WishlistController {
      * @return either the form with error messages or a redirect to "/wishlist"
      */
     @RequestMapping(method = RequestMethod.POST)
-    public String addWishlistItem(@Valid WishlistItem wishlistItem, BindingResult bindingResult) {
-        System.out.println(wishlistItem.toString());
+    public String addWishlistItem(@Valid WishlistItem wishlistItem, BindingResult bindingResult, Authentication authentication) {
+        wishlistItem.setUsername(authentication.getName());
 
+        System.out.println(wishlistItem.toString());
         System.out.println(bindingResult.getAllErrors());
 
         if (bindingResult.hasErrors()) {
@@ -78,6 +81,54 @@ public class WishlistController {
 
         // Add the record to MongoDB
         wishlistDao.add(wishlistItem);
+
+        return "redirect:/wishlist";
+    }
+
+    /**
+     * Displays a single wishlist item.
+     * @param id the unique MongoDB ID of the wishlist item
+     * @param model used to pass the retrieved item to the view
+     * @return the detailed wishlist item view page
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/{id}")
+    public String showWishlistItem(@PathVariable String id, Model model) {
+        WishlistItem wishlistItem = wishlistDao.find(id);
+
+        model.addAttribute("wishlistItem", wishlistItem);
+
+        return "wishlist/view";
+    }
+
+    /**
+     * Updates an existing wishlist item based on user input.
+     * Validates the input before saving changes to MongoDB.
+     * @param wishlistItem the updated wishlist item object
+     * @param bindingResult result of form validation
+     * @param authentication current logged-in user
+     * @return redirect to wishlist list or reloads view form if errors exist
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/update")
+    public String updateWishlistItem(@Valid WishlistItem wishlistItem, BindingResult bindingResult, Authentication authentication) {
+        wishlistItem.setUsername(authentication.getName());
+
+        if (bindingResult.hasErrors()) {
+            return "wishlist/view";
+        }
+
+        wishlistDao.update(wishlistItem);
+
+        return "redirect:/wishlist";
+    }
+
+    /**
+     * Removes a wishlist item by its ID.
+     * @param id the MongoDB ID of the item to be removed
+     * @return redirect to the main wishlist list view
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/remove/{id}")
+    public String removeWishlistItem(@PathVariable String id) {
+        wishlistDao.remove(id);
 
         return "redirect:/wishlist";
     }
