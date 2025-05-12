@@ -63,6 +63,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Allow Swagger
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/monthly-books/list", "/monthly-books/new", "/monthly-books").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             // Set custom login page and allow public access to it

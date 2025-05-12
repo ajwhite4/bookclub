@@ -1,0 +1,63 @@
+<!--
+    Gold, P. (2025). CIS 530 Server-Side Development. Bellevue University.
+    Modified by A. White 2025
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookclub | New Monthly Book</title>
+    <!-- Load Bootstrap for layout and styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+</head>
+<body>
+
+    <!-- Insert shared header -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mb-4">New Monthly Book Form</h1>
+
+                <!-- Form for submitting a new BookOfTheMonth entry -->
+                <form action="#" th:action="@{/monthly-books}" th:object="${book}" method="post">
+
+                    <!-- Dropdown menu to select the month -->
+                    <div class="mb-3">
+                        <label for="month" class="form-label">Month</label>
+                        <select name="month" id="month" class="form-select" th:field="*{month}">
+                            <option th:each="m : ${months.keySet()}" th:value="${m}" th:utext="${months.get(m)}"></option>
+                        </select>
+                        <!-- Validation error for month -->
+                        <small th:if="${#fields.hasErrors('month')}" style="color: red;" th:errors="*{month}"></small>
+                    </div>
+
+                    <!-- Text input for ISBN -->
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" id="isbn" name="isbn" th:field="*{isbn}"/>
+                        <!-- Validation error for ISBN -->
+                        <small th:if="${#fields.hasErrors('isbn')}" style="color: red;" th:errors="*{isbn}"></small>
+                    </div>
+
+                    <!-- Submit button -->
+                    <div class="mb-3 text-end">
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+
+                <!-- Link to return to the monthly books list -->
+                <a href="/monthly-books" class="link-primary">Return to Monthly Books</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insert shared script footer -->
+    <div th:insert="~{fragments/scriptFooter :: scriptFooter}"></div>
+
+</body>
+</html>

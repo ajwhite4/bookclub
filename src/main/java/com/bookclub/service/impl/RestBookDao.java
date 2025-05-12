@@ -69,12 +69,12 @@ public class RestBookDao implements BookDao {
      * @return List of Book objects
      */
     @Override
-    public List<Book> list() {
+    public List<Book> list(String key) {
         // Hardcoded list of ISBNs to retrieve from OpenLibrary
-        String isbnString = "ISBN:9780593099322,9780261102361,9780261102378,9780590302715,9780316769532";
+        // String isbnString = "ISBN:9780593099322,9780261102361,9780261102378,9780590302715,9780316769532";
 
         // Make API call and get parsed JSON document
-        Object doc = getBooksDoc(isbnString);
+        Object doc = getBooksDoc(key);
 
         List<Book> books = new ArrayList<Book>();
 
